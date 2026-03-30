@@ -32,10 +32,6 @@ The game runs as a single endless survival mode with increasing difficulty over 
 
 * Phaser
 
-## 1.6 Configuration System
-
-All game parameters are centralized in `src/game/config.js` for easy tuning, with over 50 configurable parameters covering all game systems.
-
 ## 2. Core Gameplay
 
 ### 2.1 Player Objective
@@ -82,27 +78,6 @@ At the default decision beat, the three lanes should be assigned distinct roles:
 
 The game is not stage-based. The battlefield continuously scrolls infinitely until player lost. 
 
-### 3.4 Visual Rendering
-
-#### Pseudo-3D Perspective
-- Implemented pseudo-3D perspective transform for all game objects
-- Configurable parameters:
-  - `PSEUDO3D_MIN_SCALE`: 0.5 (minimum scale at top of screen)
-  - `PSEUDO3D_MAX_SCALE`: 1.0 (maximum scale at bottom of screen)
-  - `PSEUDO3D_PERSPECTIVE_STRENGTH`: 0.5
-
-#### Lane Lines
-- Visual lane dividers rendered with pseudo-3D perspective
-
-#### Debug Panel
-- Toggleable debug panel showing:
-  - Squad count, fire rate, damage
-  - Wall counts and HP
-  - Enemy count and front HP
-  - Boss count and active HP
-  - Boss power-up stats (pierce, aoe radius, pushback strength)
-- Configurable with `SHOW_DEBUG_PANEL` flag
-
 ## 4. Core Game Loop
 
 ### 4.1 Primary Loop
@@ -133,16 +108,6 @@ Outside a run:
 The player controls a squad made of one or multiple identical units.
 
 Each unit shoots the same projectile by themselves to the front. The squad is represented both visually and mechanically through unit count. The squad's width should not exceed lane width (1/3 of the screen) and units should not overlap. If we have more units than the width, then we just "wrap" to 2nd line.
-
-#### Implementation Details:
-- `MAX_UNITS_PER_LINE: 6`
-- `SQUAD_UNIT_SPACING: 20` (horizontal)
-- `SQUAD_UNIT_ROW_SPACING: 17.5` (vertical)
-- Dynamic formation based on sqrt(unit count)
-
-### 5.2 Movement
-- Player drags the unit left and right freely on the bottom
-- Movement clamped to stay within lane boundaries
 
 ### 5.2 Core Squad Stats
 
@@ -185,60 +150,25 @@ Future expansion:
 * +3 squad wall
 * percentage-based growth wall
 
-#### Wall HP Formula
-Complex HP calculation formula with quadratic time scaling (slow start, faster later):
-```
-HP = baseHP + 
-     scalePerSecond * (survivalTime^1.5) + 
-     WALL_DESTROYED_COUNT_FACTOR * destroyedWallsCount + 
-     WALL_GENERATED_COUNT_FACTOR * generatedWallsCount
-```
-- Configurable factors:
-  - `WALL_DESTROYED_COUNT_FACTOR`: 4
-  - `WALL_GENERATED_COUNT_FACTOR`: 1
+Each squad wall will have X hp
 
-#### Wall Movement
-Walls continuously move downward at a constant speed (`WALL_MOVE_SPEED: 50` pixels per second). Back walls follow front walls while maintaining proper gap.
-
-#### Wall Spawning
-- Initial wall columns spawned from middle to top at game start
-- New walls automatically added to top every 2 seconds
-- Walls pushed forward with smooth tween animation when front wall is destroyed
+Squad-growth wall doesn't move forward unless the front one being destroyed. So the front most wall should always stay in the same position.
 
 ### 6.2 Power Wall
 
 The power lane contains one temporary or run-based combat modifier.
 
-#### Implemented Power Wall Set (POC):
+MVP power set:
 
-* `fireRate`: Multiplies fire rate by (1 - FIRE_RATE_BUFF) (15% buff, configurable)
-* `damage`: Increases damage by 1 (configurable)
-* `shield`: Increases shield by 5 (configurable)
+* Fire Rate Up
+* Piercing Shots (+1 pierce)
+* Explosive Shots (+X aoe)
+* Push Back Shot 
+* Missile Support (clears the screen)
+* Shield (absorbs enemy damage)
+* Freeze Bomb (freezes enemies)
 
-#### Boss Power-Up System (New!):
-After each boss defeat, game pauses and shows a dialogue with 3 random stronger power-ups to choose from:
-* **Piercing Shot**: Projectiles pierce through +N enemies/walls (configurable)
-* **Explosive Shot**: Projectiles have AOE damage with +N radius (configurable)
-* **Push Back Shot**: Enemies hit are pushed back +N pixels (configurable)
-* **Missile Support**: Clear the screen with a flashing effect!
-All boss power-ups stack!
-
-#### Power-Up Configuration:
-- Fire rate: `MIN_FIRE_RATE: 300ms`, `FIRE_RATE_BUFF: 0.15` (15%)
-- Damage: `DAMAGE_INCREMENT: 1`
-- Shield: `SHIELD_INCREMENT: 5`
-- Boss Power-Ups:
-  - `BOSS_POWERUP_PIERCE_INCREMENT: 1`
-  - `BOSS_POWERUP_AOE_INCREMENT: 50`
-  - `BOSS_POWERUP_PUSHBACK_INCREMENT: 200`
-
-#### Wall Movement
-Walls continuously move downward at a constant speed (`WALL_MOVE_SPEED: 50` pixels per second). Back walls follow front walls while maintaining proper gap.
-
-#### Wall Spawning
-- Initial wall columns spawned from middle to top at game start
-- New walls automatically added to top every 2 seconds
-- Walls pushed forward with smooth tween animation when front wall is destroyed
+Power wall doesn't move forward unless the front most one being destroyed. So the front most wall should always stay in the same position. 
 
 ### 6.3 Power-Up Rules
 
@@ -268,57 +198,27 @@ Enemy pressure scales over time using:
 * movement speed
 * hp
 
-#### Implementation Details:
-- Enemy rows spawn in middle lane
-- Enemy count per row scales with time: `6 + floor(survivalTime / 10)`
-- Wave interval decreases over time:
-  - Base: `WAVE_INTERVAL_BASE: 500ms`
-  - Min: `WAVE_INTERVAL_MIN: 100ms`
-  - Reduction: `WAVE_INTERVAL_REDUCTION_PER_SECOND: 5ms`
-
 ### 7.2 Enemy Types
 
 #### Grunt
 
 * simple forward movement
 * baseline enemy
-* when grunt collides with player squad, it stops moving and attacks once per second (ENEMY_ATTACK_INTERVAL: 1000ms)
-* each attack deals -1 unit or -1 shield (configurable)
-
-### 7.3 Enemy Stats (Implementation)
-- HP scales every 15 seconds: `ENEMY_HP_SCALE_PER_15_SECONDS: 3`
-- Speed scales every second: `ENEMY_SPEED_SCALE_PER_SECOND: 0.5`
+* if any grunt collide with player squad, -1 unit or -1 shield per second
 
 ## 8. Boss System
 
 ### 8.1 Boss Frequency
 
-* First boss spawn: `FIRST_BOSS_SPAWN_TIME: 20000` (20 seconds, configurable)
-* Subsequent bosses: Every `BOSS_SPAWN_INTERVAL: 20000` (20 seconds, configurable)
+* Spawn one boss every 30 seconds
 
 ### 8.2 Boss Rules
 
-* Bosses use a visible HP bar (containerized UI element with background, fill bar, and current/max HP text)
+* Bosses use a visible HP bar
+
 * Bosses are much bigger than normal enemies, has priority in spacing and spawning, but still don't overlap
-* When boss collides with player squad, it stops moving and attacks twice per second (`BOSS_ATTACK_INTERVAL: 500ms`)
-* Boss attacks deal 5 damage each (configurable)
 
-### 8.3 Boss Implementation Details
-
-#### Boss Rewards
-- Boss kill replaces old rewards (+units/+shield) with a **Boss Reward Dialogue** (game pauses):
-  - Player chooses 1 of 3 random stronger power-ups from 4 options
-  - Power-ups include: Piercing Shot, Explosive Shot, Push Back Shot, Missile Support
-  - All power-ups stack!
-
-#### Boss HP Scaling
-- Exponential HP growth per boss spawned: `BOSS_HP_SCALE_FACTOR_PER_BOSS: 1.5`
-- Formula: `maxHp = BOSS_BASE_HP * (scaleFactor ^ bossesSpawned)`
-
-#### Boss Damage
-- `BOSS_DAMAGE: 5` - damage per boss attack
-
-### 8.4 MVP Bosses
+### 8.3 MVP Bosses
 
 #### Giant Brute
 

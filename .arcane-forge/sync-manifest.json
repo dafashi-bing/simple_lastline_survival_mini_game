@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "projectId": "32",
+  "projectName": "last survivor ads tiktok game",
+  "lastPullAt": "2026-03-29T17:31:09.343768",
+  "lastPushAt": "2026-03-29T18:26:52.631163",
+  "entries": {
+    "first draft gdd.md": {
+      "relativePath": "first draft gdd.md",
+      "documentName": "first draft gdd.md",
+      "remoteFileId": 177,
+      "remoteCreatedAt": "2026-03-29T22:47:06.501001Z",
+      "remoteAuthorityLevel": "reference",
+      "localHash": "7be14e0c4347004d",
+      "lastPulledHash": "7be14e0c4347004d",
+      "lastUploadedHash": null,
+      "lastDownloadedAt": "2026-03-29T17:31:09.343074",
+      "lastUploadedAt": null
+    },
+    "feature status.md": {
+      "relativePath": "feature status.md",
+      "documentName": "feature status.md",
+      "remoteFileId": 178,
+      "remoteCreatedAt": "2026-03-30T01:26:54.661329Z",
+      "remoteAuthorityLevel": "reference",
+      "localHash": "-2958cdadbd9cf3be",
+      "lastPulledHash": null,
+      "lastUploadedHash": "-2958cdadbd9cf3be",
+      "lastDownloadedAt": null,
+      "lastUploadedAt": "2026-03-29T18:26:52.631163"
+    },
+    "gdd.md": {
+      "relativePath": "gdd.md",
+      "documentName": "gdd.md",
+      "remoteFileId": 179,
+      "remoteCreatedAt": "2026-03-30T01:26:55.192227Z",
+      "remoteAuthorityLevel": "reference",
+      "localHash": "3e3bdcc8aaf22c25",
+      "lastPulledHash": null,
+      "lastUploadedHash": "3e3bdcc8aaf22c25",
+      "lastDownloadedAt": null,
+      "lastUploadedAt": "2026-03-29T18:26:52.631163"
+    }
+  }
+}

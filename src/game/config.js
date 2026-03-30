@@ -1,11 +1,14 @@
 export const CONFIG = {
     CANVAS_WIDTH: 720,
     CANVAS_HEIGHT: 1280,
+    PSEUDO3D_MIN_SCALE: 0.5,
+    PSEUDO3D_MAX_SCALE: 1.0,
+    PSEUDO3D_PERSPECTIVE_STRENGTH: 0.5,
     LANES: 3,
     INITIAL_SQUAD_COUNT: 1,
     INITIAL_FIRE_RATE: 1500,
     MIN_FIRE_RATE: 300,
-    FIRE_RATE_REDUCTION: 200,
+    FIRE_RATE_BUFF: 0.15,
     INITIAL_DAMAGE: 1,
     DAMAGE_INCREMENT: 1,
     INITIAL_SHIELD: 0,
@@ -21,24 +24,40 @@ export const CONFIG = {
     POWER_WALL_BASE_HP: 1,
     POWER_WALL_HP_SCALE_PER_SECOND: 2,
     WALL_MOVE_SPEED: 50, // Walls move down at 50 pixels per second
-    ENEMY_BASE_HP: 3,
-    ENEMY_HP_SCALE_PER_15_SECONDS: 1,
+    ENEMY_BASE_HP: 2,
+    ENEMY_HP_SCALE_PER_15_SECONDS: 10,
     ENEMY_BASE_SPEED: 30,
     ENEMY_SPEED_SCALE_PER_SECOND: 0.5,
     PROJECTILE_SPEED: 600,
     PROJECTILE_SIZE: 5,
-    WAVE_INTERVAL: 2000,
-    MAX_UNITS_PER_LINE: 4,
+    WAVE_INTERVAL_BASE: 500,
+    WAVE_INTERVAL_MIN: 100,
+    WAVE_INTERVAL_REDUCTION_PER_SECOND: 5,
+    SQUAD_UNIT_SPACING: 20,
+    SQUAD_UNIT_ROW_SPACING: 17.5,
+    MAX_UNITS_PER_LINE: 6,
     SHOW_DEBUG_PANEL: true,
-    
+
+    // Wall HP Formula Configuration
+    WALL_DESTROYED_COUNT_FACTOR: 4,
+    WALL_GENERATED_COUNT_FACTOR: 1,
+
     // Boss Configuration
-    BOSS_SPAWN_INTERVAL: 30000, // 30 seconds
-    BOSS_SIZE: 80, // Larger than normal enemies
-    BOSS_BASE_HP: 50,
-    BOSS_HP_SCALE_PER_30_SECONDS: 25,
+    FIRST_BOSS_SPAWN_TIME: 20000, // First boss at 20 seconds
+    BOSS_SPAWN_INTERVAL: 20000, // 20 seconds between bosses
+    BOSS_SIZE: 160, // Larger than normal enemies
+    BOSS_BASE_HP: 100,
+    BOSS_HP_SCALE_FACTOR_PER_BOSS: 1.5,
     BOSS_BASE_SPEED: 20, // Slower than normal enemies
-    BOSS_SPEED_SCALE_PER_SECOND: 0.3,
-    BOSS_DAMAGE: 3, // How many units to remove on collision
-    BOSS_REWARD_UNITS: 3, // How many units to gain on boss kill
-    BOSS_REWARD_SHIELD: 5, // How much shield to gain on boss kill
+    BOSS_SPEED_SCALE_PER_SECOND: 0.5,
+    BOSS_DAMAGE: 5, // How many units to remove on collision
+
+    // Boss Power-Up Configuration
+    BOSS_POWERUP_PIERCE_INCREMENT: 1,
+    BOSS_POWERUP_AOE_INCREMENT: 50,
+    BOSS_POWERUP_PUSHBACK_INCREMENT: 200,
+
+    // Enemy/Boss Attack Configuration
+    ENEMY_ATTACK_INTERVAL: 1000, // Enemies attack once per second
+    BOSS_ATTACK_INTERVAL: 500, // Bosses attack twice per second
 };
