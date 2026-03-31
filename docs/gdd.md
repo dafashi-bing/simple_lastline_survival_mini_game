@@ -36,6 +36,23 @@ The game runs as a single endless survival mode with increasing difficulty over 
 
 All game parameters are centralized in `src/game/config.js` for easy tuning, with over 50 configurable parameters covering all game systems.
 
+## 1.7 Manager-Based Architecture
+
+The codebase is organized into a modular manager-based architecture for better maintainability and scalability:
+
+### Managers (`src/game/managers/`)
+- **SquadManager**: Handles squad creation, formation, and movement
+- **EnemyManager**: Manages enemy spawning, AI, and combat
+- **BossManager**: Controls boss spawning, HP bars, and rewards
+- **WallManager**: Manages growth and power wall spawning and movement
+- **ProjectileManager**: Handles projectile firing, collision detection, and effects
+- **UIManager**: Controls all HUD elements, boss HP bar, and debug panel
+- **Pseudo3DManager**: Applies perspective transform and draws lane lines
+
+### Utilities (`src/game/utils/`)
+- **DepthManager**: Tracks and manages rendering depth for game objects
+- **PowerUpManager**: Handles power-up application and state management
+
 ## 2. Core Gameplay
 
 ### 2.1 Player Objective
@@ -53,7 +70,9 @@ Survive as long as possible against infinite enemy waves while increasing squad 
 
 At the start of a run:
 
-* Player begins with 1 units
+* Player begins with 2 units (configurable: `INITIAL_SQUAD_COUNT: 2`)
+* Initial damage: 2 (configurable: `INITIAL_DAMAGE: 2`)
+* Initial fire rate: 1200ms (configurable: `INITIAL_FIRE_RATE: 1200`)
 * No active power-up unless granted by ad buff or meta progression
 
 ## 3. Playfield and Lane Structure
@@ -143,6 +162,7 @@ Each unit shoots the same projectile by themselves to the front. The squad is re
 ### 5.2 Movement
 - Player drags the unit left and right freely on the bottom
 - Movement clamped to stay within lane boundaries
+- **Smooth movement**: Squad moves towards target position at configurable speed (`SQUAD_SPEED: 400` pixels per second) instead of instantaneous jumps
 
 ### 5.2 Core Squad Stats
 
@@ -219,7 +239,7 @@ The power lane contains one temporary or run-based combat modifier.
 After each boss defeat, game pauses and shows a dialogue with 3 random stronger power-ups to choose from:
 * **Piercing Shot**: Projectiles pierce through +N enemies/walls (configurable)
 * **Explosive Shot**: Projectiles have AOE damage with +N radius (configurable)
-* **Push Back Shot**: Enemies hit are pushed back +N pixels (configurable)
+* **Push Back Shot**: Enemies and bosses hit are pushed back +N pixels (configurable)
 * **Missile Support**: Clear the screen with a flashing effect!
 All boss power-ups stack!
 
@@ -280,7 +300,9 @@ Enemy pressure scales over time using:
 
 #### Grunt
 
-* simple forward movement
+* **Two-phase movement**:
+  1. **Charge phase**: Simple forward movement straight down the battlefield
+  2. **Engage phase**: When enemy reaches (front-most squad unit's Y position + `ENEMY_ENGAGE_Y`), it steers directly toward the nearest squad unit
 * baseline enemy
 * when grunt collides with player squad, it stops moving and attacks once per second (ENEMY_ATTACK_INTERVAL: 1000ms)
 * each attack deals -1 unit or -1 shield (configurable)
@@ -300,6 +322,7 @@ Enemy pressure scales over time using:
 
 * Bosses use a visible HP bar (containerized UI element with background, fill bar, and current/max HP text)
 * Bosses are much bigger than normal enemies, has priority in spacing and spawning, but still don't overlap
+* Bosses can be pushed back by projectiles with push back power-up
 * When boss collides with player squad, it stops moving and attacks twice per second (`BOSS_ATTACK_INTERVAL: 500ms`)
 * Boss attacks deal 5 damage each (configurable)
 

@@ -1,5 +1,23 @@
 # AGENTS.md - Last Line Survivor
+## CRITICAL: WORKFLOW GUIDES FIRST - MUST FOLLOW THESE BEFORE ANYTHING ELSE
 
+### 1. Plan and Implement Workflow
+- **Before executing build/implement steps**: If a plan is created, SAVE THE PLAN into the `plans/` directory first.
+- **When a feature is finished**:
+  1. Run `npm run build` to ensure the code still compiles
+  2. Update `docs/gdd.md` if there are any mechanism changes
+  3. Update `docs/feature status.md`, marking the feature as "waiting for test"
+
+### 2. Bug Fixing Workflow
+When asked to fix a bug, ALWAYS follow this EXACT order:
+1. **Analyze** - Read the relevant code and understand the full context of the issue
+2. **Explain** - Describe what is causing the bug (root cause, not just symptoms)
+3. **Fix** - Apply the minimal, targeted change that resolves the root cause
+4. **Test** - Run `npm run build` to make sure the code can still build and compile
+
+---
+
+## Project Overview
 This document provides guidelines for agentic coding assistants working in the Last Line Survivor repository.
 
 ## Build, Lint, and Test Commands
@@ -91,11 +109,6 @@ src/
 - Apply transform with `applyPseudo3DTransform(obj)` in `update()`
 - Transform uses `CONFIG.PSEUDO3D_*` constants
 
-### No Existing Rules Files
-- No `.cursor/` directory or `.cursorrules` file
-- No `.github/copilot-instructions.md` file
-- No existing AGENTS.md prior to this one
-
 ### Key Files to Know
 - `src/game/config.js` - All game balance constants
 - `src/game/scenes/Game.js` - Main game logic (1158 lines)
@@ -112,14 +125,3 @@ src/
 - Game runs at 720x1280 resolution (portrait orientation)
 - Use `CONFIG.SHOW_DEBUG_PANEL` to toggle debug UI
 - Access game state via scene instance properties
-
-## Workflow Guides
-
-### Bug Fixing Workflow
-
-When asked to fix a bug, always follow this order:
-
-1. **Analyze** - Read the relevant code and understand the full context of the issue
-2. **Explain** - Describe what is causing the bug (root cause, not just symptoms)
-3. **Fix** - Apply the minimal, targeted change that resolves the root cause
-4. **Test** - Make sure the code can still build and compile. Run test if exists.

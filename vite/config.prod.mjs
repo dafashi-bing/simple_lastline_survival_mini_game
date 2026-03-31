@@ -17,13 +17,16 @@ const phasermsg = () => {
 }   
 
 export default defineConfig({
-    base: './',
+    base: process.env.BASE_URL || './',
     logLevel: 'warn',
     build: {
         rollupOptions: {
             output: {
-                manualChunks: {
-                    phaser: ['phaser']
+                manualChunks(id) {
+                    if (id.includes('node_modules/phaser')) {
+                        return 'phaser';
+                    }
+                    return undefined;
                 }
             }
         },

@@ -1,3 +1,11 @@
+function getUrlParam(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+}
+
+const showDebugFromUrl = getUrlParam('debug');
+const showDebugPanel = showDebugFromUrl === 'true' || showDebugFromUrl === '1';
+
 export const CONFIG = {
     CANVAS_WIDTH: 720,
     CANVAS_HEIGHT: 1280,
@@ -5,11 +13,11 @@ export const CONFIG = {
     PSEUDO3D_MAX_SCALE: 1.0,
     PSEUDO3D_PERSPECTIVE_STRENGTH: 0.5,
     LANES: 3,
-    INITIAL_SQUAD_COUNT: 1,
-    INITIAL_FIRE_RATE: 1500,
+    INITIAL_SQUAD_COUNT: 2,
+    INITIAL_FIRE_RATE: 1200,
     MIN_FIRE_RATE: 300,
-    FIRE_RATE_BUFF: 0.15,
-    INITIAL_DAMAGE: 1,
+    FIRE_RATE_BUFF: 0.1,
+    INITIAL_DAMAGE: 2,
     DAMAGE_INCREMENT: 1,
     INITIAL_SHIELD: 0,
     SHIELD_INCREMENT: 5,
@@ -24,19 +32,20 @@ export const CONFIG = {
     POWER_WALL_BASE_HP: 1,
     POWER_WALL_HP_SCALE_PER_SECOND: 2,
     WALL_MOVE_SPEED: 50, // Walls move down at 50 pixels per second
-    ENEMY_BASE_HP: 2,
-    ENEMY_HP_SCALE_PER_15_SECONDS: 10,
+    ENEMY_BASE_HP: 1,
+    ENEMY_HP_SCALE_PER_15_SECONDS: 5,
     ENEMY_BASE_SPEED: 30,
     ENEMY_SPEED_SCALE_PER_SECOND: 0.5,
     PROJECTILE_SPEED: 600,
     PROJECTILE_SIZE: 5,
+    SQUAD_SPEED: 400, // Squad horizontal movement speed in pixels per second
     WAVE_INTERVAL_BASE: 500,
     WAVE_INTERVAL_MIN: 100,
     WAVE_INTERVAL_REDUCTION_PER_SECOND: 5,
     SQUAD_UNIT_SPACING: 20,
     SQUAD_UNIT_ROW_SPACING: 17.5,
     MAX_UNITS_PER_LINE: 6,
-    SHOW_DEBUG_PANEL: true,
+    SHOW_DEBUG_PANEL: showDebugFromUrl !== null ? showDebugPanel : false,
 
     // Wall HP Formula Configuration
     WALL_DESTROYED_COUNT_FACTOR: 4,
@@ -55,9 +64,12 @@ export const CONFIG = {
     // Boss Power-Up Configuration
     BOSS_POWERUP_PIERCE_INCREMENT: 1,
     BOSS_POWERUP_AOE_INCREMENT: 50,
-    BOSS_POWERUP_PUSHBACK_INCREMENT: 200,
+    BOSS_POWERUP_PUSHBACK_INCREMENT: 40,
 
     // Enemy/Boss Attack Configuration
     ENEMY_ATTACK_INTERVAL: 1000, // Enemies attack once per second
     BOSS_ATTACK_INTERVAL: 500, // Bosses attack twice per second
+
+    // Enemy Engage Configuration
+    ENEMY_ENGAGE_Y: 300, // Y position where enemies stop charging and start walking towards the squad
 };

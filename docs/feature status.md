@@ -25,6 +25,22 @@ This document tracks the implementation status of all features from the Game Des
 
 ---
 
+## 1.5 Manager-Based Architecture
+
+| Feature | Status | Notes |
+|---------|--------|-------|
+| SquadManager | ✅ Implemented | Manages squad creation, formation, movement |
+| EnemyManager | ✅ Implemented | Manages enemy spawning, AI, combat |
+| BossManager | ✅ Implemented | Manages boss spawning, HP bars, rewards |
+| WallManager | ✅ Implemented | Manages growth/power wall spawning, movement |
+| ProjectileManager | ✅ Implemented | Manages projectiles, collisions, effects |
+| UIManager | ✅ Implemented | Manages HUD, boss HP bar, debug panel |
+| Pseudo3DManager | ✅ Implemented | Manages perspective transform, lane lines |
+| DepthManager | ✅ Implemented | Manages rendering depth |
+| PowerUpManager | ✅ Implemented | Manages power-up application, state |
+
+---
+
 ## 2. Playfield & Lane System
 
 | Feature | Status | Notes |
@@ -43,7 +59,8 @@ This document tracks the implementation status of all features from the Game Des
 
 | Feature | Status | Notes |
 |---------|--------|-------|
-| Initial squad: 1 unit | ✅ Implemented | |
+| Initial squad: 2 units | ✅ Implemented | Updated from 1 to 2 |
+| Smooth squad movement | ✅ Implemented | Squad moves towards target at configurable speed |
 | Unit count as primary stat | ✅ Implemented | |
 | Squad formation wrapping | ✅ Implemented | Max 6 units per line |
 | Auto-fire forward | ✅ Implemented | |
@@ -64,7 +81,7 @@ This document tracks the implementation status of all features from the Game Des
 | Shield | ✅ Implemented | |
 | Piercing Shots | ✅ Implemented | Boss power-up, works on enemies and walls |
 | Explosive Shots | ✅ Implemented | Boss power-up, AOE damage |
-| Push Back Shot | ✅ Implemented | Boss power-up |
+| Push Back Shot | ✅ Implemented | Boss power-up, works on both enemies and bosses |
 | Missile Support | ✅ Implemented | Boss power-up, screen flash + clear all enemies |
 | Freeze Bomb | ❌ Not Implemented | |
 | Power-up stacking | ✅ Implemented | All boss power-ups stack |
@@ -78,7 +95,8 @@ This document tracks the implementation status of all features from the Game Des
 
 | Feature | Status | Notes |
 |---------|--------|-------|
-| Grunt enemy type | ✅ Implemented | |
+| Grunt enemy type | ✅ Implemented | Two-phase AI (charge + steer to squad) |
+| Enemy two-phase AI | ✅ Implemented | Charge down, then steer to nearest squad unit; engage Y based on front-most squad unit + ENEMY_ENGAGE_Y |
 | Enemy spawn from top | ✅ Implemented | |
 | Enemy HP scaling | ✅ Implemented | Every 15 seconds |
 | Enemy speed scaling | ✅ Implemented | Every second (linear) |
@@ -100,7 +118,7 @@ This document tracks the implementation status of all features from the Game Des
 | Boss rewards | ✅ Implemented | Boss reward dialogue with power-up choices |
 | Boss HP scaling | ✅ Implemented | Now scales per boss spawned, not time |
 | Boss multiple damage | ✅ Implemented | Boss stops moving and attacks every 500ms! |
-| Boss attack behavior | ✅ Implemented | |
+| Boss attack behavior | ✅ Implemented | Bosses can be pushed back by projectiles with push back power-up |
 
 ---
 
@@ -191,7 +209,7 @@ This document tracks the implementation status of all features from the Game Des
 
 ## Summary
 
-- **Total Features Tracked**: 115
-- **✅ Implemented**: 61 (53.0%)
-- **⚠️ Partially Implemented**: 5 (4.3%)
-- **❌ Not Implemented**: 49 (42.6%)
+- **Total Features Tracked**: 127
+- **✅ Implemented**: 73 (57.5%)
+- **⚠️ Partially Implemented**: 5 (3.9%)
+- **❌ Not Implemented**: 49 (38.6%)
